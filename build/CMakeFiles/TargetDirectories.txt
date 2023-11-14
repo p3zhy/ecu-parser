@@ -1,3 +1,0 @@
-/home/pejman/ecu-parser/build/CMakeFiles/rebuild_cache.dir
-/home/pejman/ecu-parser/build/CMakeFiles/edit_cache.dir
-/home/pejman/ecu-parser/build/CMakeFiles/ecutool.dir

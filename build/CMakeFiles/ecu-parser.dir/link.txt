@@ -1,1 +1,0 @@
-/usr/bin/cc    CMakeFiles/ecu-parser.dir/src/main.c.o CMakeFiles/ecu-parser.dir/src/ecu_parser.c.o  -o ecu-parser 
