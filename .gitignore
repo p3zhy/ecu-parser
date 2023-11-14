@@ -1,0 +1,24 @@
+# Ignore build and CMake files
+/build/
+/CMakeFiles/
+/cmake_install.cmake
+/CMakeCache.txt
+/*.cmake
+/*.make
+/*.txt
+/*.log
+/cmake-build-debug/
+/cmake-build-release/
+
+# Ignore compiled binaries
+*.out
+*.o
+
+# Ignore generated files
+/Makefile
+/text/
+
+# Ignore IDE-specific files
+*.vscode/
+*.idea/
+
