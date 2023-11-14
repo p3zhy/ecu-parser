@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/ecutool.dir/src/main.c.o CMakeFiles/ecutool.dir/src/ecu_parser.c.o  -o ecutool 

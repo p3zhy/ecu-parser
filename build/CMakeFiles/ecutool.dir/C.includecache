@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pejman/ecu-parser/src/ecu_parser.c
+ecu_parser.h
+/home/pejman/ecu-parser/src/ecu_parser.h
+
+/home/pejman/ecu-parser/src/ecu_parser.h
+stddef.h
+-
+stdio.h
+-
+stdint.h
+-
+
