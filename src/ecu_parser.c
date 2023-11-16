@@ -9,7 +9,7 @@ ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data,
     }
     printf("\n");
 
-    return OBD2_APPLICATION_LAYER_PROTOCOL;
+    return APPLICATION_LAYER_PROTOCOL_OBD2;
 }
 
 void parse_protocol(uint32_t identifier, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol)
@@ -20,5 +20,5 @@ void parse_protocol(uint32_t identifier, unsigned char *data, int dataSize, Appl
 IdentifierType ckeck_identifier_type(uint32_t identifier)
 {
 
-    return (identifier <= 0x7FF) ? StandardIdentifierType : ExtendedIdentifierType;
+    return (identifier <= 0x7FF) ? IDENTIFIER_TYPE_STANDARD : IDENTIFIER_TYPE_EXTENDED;
 }
