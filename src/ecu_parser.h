@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdint.h>
-
+#include <stdbool.h>
 typedef enum ApplicationLayerProtocol
 {
     J1939_APPLICATION_LAYER_PROTOCOL,
@@ -16,7 +16,13 @@ typedef enum ApplicationLayerProtocol
     ISOBUS_APPLICATION_LAYER_PROTOCOL
 } ApplicationLayerProtocol;
 
-ApplicationLayerProtocol findProtocol(uint32_t id, unsigned char *data, int dataSize);
-void parseProtocol(uint32_t id, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol);
+typedef enum IdentifierType
+{
+    StandardIdentifierType,
+    ExtendedIdentifierType,
+} IdentifierType;
 
+ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data, int dataSize);
+void parse_protocol(uint32_t identifier, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol);
+IdentifierType ckeck_identifier_type(uint32_t identifier);
 #endif // ECU_PARSER_H

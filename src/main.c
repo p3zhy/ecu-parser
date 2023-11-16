@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-        findProtocol(id, data, dataSize);
+        find_protocol(id, data, dataSize);
 
         // Free allocated memory
         free(data);
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
             printf("Usage: %s parse --id <id> --data <data> --protocol <protocol>\n", argv[0]);
             return 1;
         }
-        // parseProtocol(id, data, dataSize);
+        // parse_protocol(id, data, dataSize);
         free(data);
     }
     else
