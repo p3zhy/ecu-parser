@@ -17,6 +17,6 @@ typedef enum ApplicationLayerProtocol
 } ApplicationLayerProtocol;
 
 ApplicationLayerProtocol findProtocol(uint32_t id, unsigned char *data, int dataSize);
-void parseProtocol(uint32_t id, unsigned char *data, ApplicationLayerProtocol protocol);
+void parseProtocol(uint32_t id, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol);
 
 #endif // ECU_PARSER_H

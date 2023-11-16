@@ -11,7 +11,7 @@ ApplicationLayerProtocol findProtocol(uint32_t id, unsigned char *data, int data
     return OBD2_APPLICATION_LAYER_PROTOCOL;
 }
 
-void parseProtocol(uint32_t id, unsigned char *data, ApplicationLayerProtocol protocol)
+void parseProtocol(uint32_t id, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol)
 {
     printf("Parsing protocol...\n");
 }

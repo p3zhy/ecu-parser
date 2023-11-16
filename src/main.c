@@ -57,7 +57,46 @@ int main(int argc, char *argv[])
     }
     else if (strcmp(mode, "parse") == 0)
     {
-        // parseProtocol();
+        uint32_t id = 0;
+        unsigned char *data = NULL;
+        int dataSize = 0;
+        const char *protocolName = NULL;
+
+        // Parse command line arguments
+        for (int i = 2; i < argc; ++i)
+        {
+
+            if (strcmp(argv[i], "--protocol") == 0 && i + 1 < argc)
+            {
+                protocolName = argv[i + 1];
+                i++;
+            }
+            else if (strcmp(argv[i], "--id") == 0 && i + 1 < argc)
+            {
+                id = atoi(argv[i + 1]);
+                i++;
+            }
+            else if (strcmp(argv[i], "--data") == 0 && i + 1 < argc)
+            {
+                int numBytes = argc - (i + 1);
+                data = (unsigned char *)malloc(numBytes * sizeof(unsigned char));
+                for (int j = 0; j < numBytes; ++j)
+                {
+                    data[j] = (unsigned char)atoi(argv[i + 1 + j]);
+                }
+                dataSize = numBytes;
+                break;
+            }
+        }
+
+        // Check if id, data, and protocol were provided
+        if (id == 0 || data == NULL || protocolName == NULL)
+        {
+            printf("Usage: %s parse --id <id> --data <data> --protocol <protocol>\n", argv[0]);
+            return 1;
+        }
+        // parseProtocol(id, data, dataSize);
+        free(data);
     }
     else
     {
