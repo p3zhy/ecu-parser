@@ -1,9 +1,9 @@
 #include "ecu_parser.h"
 
-ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data, int dataSize)
+ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data, int size)
 {
     printf("Finding protocol with identifier: %u and data: ", identifier);
-    for (int i = 0; i < dataSize; ++i)
+    for (int i = 0; i < size; ++i)
     {
         printf("%02u ", data[i]);
     }
@@ -12,7 +12,7 @@ ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data,
     return APPLICATION_LAYER_PROTOCOL_OBD2;
 }
 
-void parse_protocol(uint32_t identifier, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol)
+void parse_protocol(uint32_t identifier, unsigned char *data, int size, ApplicationLayerProtocol protocol)
 {
     printf("Parsing protocol...\n");
 }

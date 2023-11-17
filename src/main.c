@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     {
         uint32_t id = 0;
         unsigned char *data = NULL;
-        int dataSize = 0;
+        int size = 0;
 
         // Parse command line arguments
         for (int i = 2; i < argc; ++i)
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
                 {
                     data[j] = (unsigned char)atoi(argv[i + 1 + j]);
                 }
-                dataSize = numBytes;
+                size = numBytes;
                 break;
             }
         }
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-        find_protocol(id, data, dataSize);
+        find_protocol(id, data, size);
 
         // Free allocated memory
         free(data);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     {
         uint32_t id = 0;
         unsigned char *data = NULL;
-        int dataSize = 0;
+        int size = 0;
         const char *protocolName = NULL;
 
         // Parse command line arguments
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
                 {
                     data[j] = (unsigned char)atoi(argv[i + 1 + j]);
                 }
-                dataSize = numBytes;
+                size = numBytes;
                 break;
             }
         }
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
             printf("Usage: %s parse --id <id> --data <data> --protocol <protocol>\n", argv[0]);
             return 1;
         }
-        // parse_protocol(id, data, dataSize);
+        // parse_protocol(id, data, size);
         free(data);
     }
     else

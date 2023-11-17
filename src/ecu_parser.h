@@ -22,7 +22,7 @@ typedef enum IdentifierType
     IDENTIFIER_TYPE_EXTENDED,
 } IdentifierType;
 
-ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data, int dataSize);
-void parse_protocol(uint32_t identifier, unsigned char *data, int dataSize, ApplicationLayerProtocol protocol);
+ApplicationLayerProtocol find_protocol(uint32_t identifier, unsigned char *data, int size);
+void parse_protocol(uint32_t identifier, unsigned char *data, int size, ApplicationLayerProtocol protocol);
 IdentifierType ckeck_identifier_type(uint32_t identifier);
 #endif // ECU_PARSER_H
