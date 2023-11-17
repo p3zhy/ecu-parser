@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-        find_protocol(id, data, size);
+        // find_protocol(id, data, size);
 
         // Free allocated memory
         free(data);

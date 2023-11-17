@@ -35,7 +35,7 @@ typedef enum
     IDENTIFIER_TYPE_EXTENDED,
 } identifier_type_t;
 
-application_layer_protocol_t find_protocol(uint32_t identifier, uint8_t *data, size_t data_size);
+int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t *protocol);
 void parse_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t protocol);
 identifier_type_t ckeck_identifier_type(uint32_t identifier);
 int get_obd_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details);

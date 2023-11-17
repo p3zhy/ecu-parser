@@ -1,14 +1,39 @@
 #include "ecu_parser.h"
 
-application_layer_protocol_t find_protocol(uint32_t identifier, uint8_t *data, size_t data_size)
+int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t *protocol)
 {
 
-    // Based on ISO 15765-4
-    if ((identifier == 0x7DF) || ((identifier >= 0x7E0) && (identifier <= 0x7EF)))
+    if (ckeck_identifier_type(identifier) == IDENTIFIER_TYPE_STANDARD)
     {
+        // Based on ISO 15765-4
+        if ((identifier == 0x7DF) || ((identifier >= 0x7E0) && (identifier <= 0x7EF)))
+        {
+            obd2_frame_details_t obd2_frame_detail;
+            if (get_obd_frame_details(identifier, data, data_size, &obd2_frame_detail))
+                return EXIT_FAILURE;
+            if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
+            {
+                *protocol = APPLICATION_LAYER_PROTOCOL_OBD2;
+                return EXIT_SUCCESS;
+            }
+        }
     }
-
-    return APPLICATION_LAYER_PROTOCOL_UNKNOWN;
+    else
+    {
+        if ((identifier == 0x18DB33F1) || ((identifier >= 0x18DAF100) && (identifier <= 0x18DAF1FF)))
+        {
+            obd2_frame_details_t obd2_frame_detail;
+            if (get_obd_frame_details(identifier, data, data_size, &obd2_frame_detail))
+                return EXIT_FAILURE;
+            if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
+            {
+                *protocol = APPLICATION_LAYER_PROTOCOL_OBD2;
+                return EXIT_SUCCESS;
+            }
+        }
+    }
+    *protocol = APPLICATION_LAYER_PROTOCOL_UNKNOWN;
+    return EXIT_SUCCESS;
 }
 
 void parse_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t protocol)
