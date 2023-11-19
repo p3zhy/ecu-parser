@@ -75,6 +75,18 @@ void test_get_uds_frame_details_unsuccessfully()
     TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
 }
 
+void test_find_protocol_uds_successfully()
+{
+
+    uint8_t input_data[] = {0x03, 0x7F, 0x22, 0x13};
+    uint32_t input_identifier = 0x7E8;
+    application_layer_protocol_t actual = APPLICATION_LAYER_PROTOCOL_UNKNOWN;
+    application_layer_protocol_t expected = APPLICATION_LAYER_PROTOCOL_UDS;
+    int result = find_protocol(input_identifier, input_data, 8, &actual);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_INT(expected, actual);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -85,6 +97,7 @@ int main()
     RUN_TEST(test_find_protocol_obd2_successfully);
     RUN_TEST(test_get_uds_frame_details_successfully);
     RUN_TEST(test_get_uds_frame_details_unsuccessfully);
+    RUN_TEST(test_find_protocol_uds_successfully);
 
     UNITY_END();
 

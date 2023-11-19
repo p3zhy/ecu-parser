@@ -16,6 +16,17 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
                 *protocol = APPLICATION_LAYER_PROTOCOL_OBD2;
                 return EXIT_SUCCESS;
             }
+            uds_frame_details_t uds_frame_detail;
+            if (get_uds_frame_details(identifier, data, data_size, &uds_frame_detail))
+                return EXIT_FAILURE;
+
+            if ((uds_frame_detail.service_id <= 0x3E && uds_frame_detail.service_id >= 0x10) || (uds_frame_detail.service_id <= 0x7E && uds_frame_detail.service_id >= 0x50) ||
+                (uds_frame_detail.service_id <= 0x88 && uds_frame_detail.service_id >= 0x83) || (uds_frame_detail.service_id <= 0xC8 && uds_frame_detail.service_id >= 0xC3) ||
+                (uds_frame_detail.service_id <= 0x7E && uds_frame_detail.service_id >= 0x50) || (uds_frame_detail.service_id == 0x7F))
+            {
+                *protocol = APPLICATION_LAYER_PROTOCOL_UDS;
+                return EXIT_SUCCESS;
+            }
         }
     }
     else
