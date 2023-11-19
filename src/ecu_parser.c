@@ -9,7 +9,7 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
         if ((identifier == 0x7DF) || ((identifier >= 0x7E0) && (identifier <= 0x7EF)))
         {
             obd2_frame_details_t obd2_frame_detail;
-            if (get_obd_frame_details(identifier, data, data_size, &obd2_frame_detail))
+            if (get_obd2_frame_details(identifier, data, data_size, &obd2_frame_detail))
                 return EXIT_FAILURE;
             if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
             {
@@ -23,7 +23,7 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
         if ((identifier == 0x18DB33F1) || ((identifier >= 0x18DAF100) && (identifier <= 0x18DAF1FF)))
         {
             obd2_frame_details_t obd2_frame_detail;
-            if (get_obd_frame_details(identifier, data, data_size, &obd2_frame_detail))
+            if (get_obd2_frame_details(identifier, data, data_size, &obd2_frame_detail))
                 return EXIT_FAILURE;
             if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
             {
@@ -47,7 +47,7 @@ identifier_type_t ckeck_identifier_type(uint32_t identifier)
     return (identifier <= 0x7FF) ? IDENTIFIER_TYPE_STANDARD : IDENTIFIER_TYPE_EXTENDED;
 }
 
-int get_obd_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details)
+int get_obd2_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details)
 {
     // Based on ISO 15031-5
     if (data_size < 4)
@@ -58,6 +58,22 @@ int get_obd_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, 
     frame_details->length = data[0];
     frame_details->mode = data[1];
     frame_details->pid = data[2];
+    memcpy(frame_details->data_bytes, &data[3], data_size - 3);
+    return EXIT_SUCCESS;
+}
+
+int get_uds_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, uds_frame_details_t *frame_details)
+{
+
+    if (data_size < 4)
+    {
+        return EXIT_FAILURE;
+    }
+
+    frame_details->identifier = identifier;
+    frame_details->protocol_control_information = data[0];
+    frame_details->service_id = data[1];
+    frame_details->sub_function = data[2];
     memcpy(frame_details->data_bytes, &data[3], data_size - 3);
     return EXIT_SUCCESS;
 }
