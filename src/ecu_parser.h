@@ -44,10 +44,10 @@ typedef enum
     IDENTIFIER_TYPE_EXTENDED,
 } identifier_type_t;
 
-int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t *protocol);
-void parse_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t protocol);
-identifier_type_t ckeck_identifier_type(uint32_t identifier);
-int get_obd2_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details);
-int get_uds_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, uds_frame_details_t *frame_details);
+int find_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, application_layer_protocol_t *protocol);
+int parse_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, application_layer_protocol_t protocol);
+identifier_type_t check_identifier_type(uint32_t identifier);
+int get_obd2_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details);
+int get_uds_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, uds_frame_details_t *frame_details);
 
 #endif // ECU_PARSER_H

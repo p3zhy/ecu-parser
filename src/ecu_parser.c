@@ -3,7 +3,7 @@
 int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t *protocol)
 {
 
-    if (ckeck_identifier_type(identifier) == IDENTIFIER_TYPE_STANDARD)
+    if (check_identifier_type(identifier) == IDENTIFIER_TYPE_STANDARD)
     {
         // Based on ISO 15765-4
         if ((identifier == 0x7DF) || ((identifier >= 0x7E0) && (identifier <= 0x7EF)))
@@ -59,12 +59,20 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
     return EXIT_SUCCESS;
 }
 
-void parse_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t protocol)
+int parse_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t protocol)
 {
     printf("Parsing protocol...\n");
+    switch (expression)
+    {
+    case :
+        break;
+    
+    default:
+        break;
+    }
 }
 
-identifier_type_t ckeck_identifier_type(uint32_t identifier)
+identifier_type_t check_identifier_type(uint32_t identifier)
 {
 
     return (identifier <= 0x7FF) ? IDENTIFIER_TYPE_STANDARD : IDENTIFIER_TYPE_EXTENDED;

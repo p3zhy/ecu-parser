@@ -11,8 +11,8 @@ void tearDown(void)
 
 void test_check_identifier_type()
 {
-    TEST_ASSERT_EQUAL_INT(IDENTIFIER_TYPE_STANDARD, ckeck_identifier_type(0x700));
-    TEST_ASSERT_EQUAL_INT(IDENTIFIER_TYPE_EXTENDED, ckeck_identifier_type(0xCF00400));
+    TEST_ASSERT_EQUAL_INT(IDENTIFIER_TYPE_STANDARD, check_identifier_type(0x700));
+    TEST_ASSERT_EQUAL_INT(IDENTIFIER_TYPE_EXTENDED, check_identifier_type(0xCF00400));
 }
 
 void test_get_obd2_frame_details_successfully()
