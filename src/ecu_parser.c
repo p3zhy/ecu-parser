@@ -1,6 +1,6 @@
 #include "ecu_parser.h"
 
-int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t *protocol)
+int find_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, protocol_info_t *protocol_info)
 {
 
     if (check_identifier_type(identifier) == IDENTIFIER_TYPE_STANDARD)
@@ -13,7 +13,8 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
                 return EXIT_FAILURE;
             if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
             {
-                *protocol = APPLICATION_LAYER_PROTOCOL_OBD2;
+                protocol_info->protocol_name = PROTOCOL_NAME_OBD2;
+                protocol_info->protocol_details = (protocol_details_t){.obd2_details = obd2_frame_detail};
                 return EXIT_SUCCESS;
             }
             uds_frame_details_t uds_frame_detail;
@@ -24,7 +25,8 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
                 (uds_frame_detail.service_id <= 0x88 && uds_frame_detail.service_id >= 0x83) || (uds_frame_detail.service_id <= 0xC8 && uds_frame_detail.service_id >= 0xC3) ||
                 (uds_frame_detail.service_id <= 0x7E && uds_frame_detail.service_id >= 0x50) || (uds_frame_detail.service_id == 0x7F))
             {
-                *protocol = APPLICATION_LAYER_PROTOCOL_UDS;
+                protocol_info->protocol_name = PROTOCOL_NAME_UDS;
+                protocol_info->protocol_details = (protocol_details_t){.uds_details = uds_frame_detail};
                 return EXIT_SUCCESS;
             }
         }
@@ -38,7 +40,8 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
                 return EXIT_FAILURE;
             if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
             {
-                *protocol = APPLICATION_LAYER_PROTOCOL_OBD2;
+                protocol_info->protocol_name = PROTOCOL_NAME_OBD2;
+                protocol_info->protocol_details = (protocol_details_t){.obd2_details = obd2_frame_detail};
                 return EXIT_SUCCESS;
             }
 
@@ -50,23 +53,27 @@ int find_protocol(uint32_t identifier, uint8_t *data, size_t data_size, applicat
                 (uds_frame_detail.service_id <= 0x88 && uds_frame_detail.service_id >= 0x83) || (uds_frame_detail.service_id <= 0xC8 && uds_frame_detail.service_id >= 0xC3) ||
                 (uds_frame_detail.service_id <= 0x7E && uds_frame_detail.service_id >= 0x50) || (uds_frame_detail.service_id == 0x7F))
             {
-                *protocol = APPLICATION_LAYER_PROTOCOL_UDS;
+                protocol_info->protocol_name = PROTOCOL_NAME_UDS;
+                protocol_info->protocol_details = (protocol_details_t){.uds_details = uds_frame_detail};
                 return EXIT_SUCCESS;
             }
         }
     }
-    *protocol = APPLICATION_LAYER_PROTOCOL_UNKNOWN;
+
+    protocol_info->protocol_name = PROTOCOL_NAME_UNKNOWN;
+    protocol_info->protocol_details = (protocol_details_t){};
     return EXIT_SUCCESS;
 }
-
-int parse_protocol(uint32_t identifier, uint8_t *data, size_t data_size, application_layer_protocol_t protocol)
+int parse_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, protocol_info_t protocol_info, parser_details_t parser_details)
 {
     printf("Parsing protocol...\n");
-    switch (expression)
+    switch (protocol_info.protocol_name)
     {
-    case :
+    case PROTOCOL_NAME_OBD2:
+
         break;
-    
+    case PROTOCOL_NAME_UDS:
+        break;
     default:
         break;
     }
@@ -78,7 +85,7 @@ identifier_type_t check_identifier_type(uint32_t identifier)
     return (identifier <= 0x7FF) ? IDENTIFIER_TYPE_STANDARD : IDENTIFIER_TYPE_EXTENDED;
 }
 
-int get_obd2_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details)
+int get_obd2_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details)
 {
     // Based on ISO 15031-5
     if (data_size < 4)
@@ -93,7 +100,7 @@ int get_obd2_frame_details(uint32_t identifier, uint8_t *data, size_t data_size,
     return EXIT_SUCCESS;
 }
 
-int get_uds_frame_details(uint32_t identifier, uint8_t *data, size_t data_size, uds_frame_details_t *frame_details)
+int get_uds_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, uds_frame_details_t *frame_details)
 {
 
     if (data_size < 4)

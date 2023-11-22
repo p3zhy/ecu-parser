@@ -44,11 +44,26 @@ void test_find_protocol_obd2_successfully()
 
     uint8_t input_data[] = {0x03, 0x41, 0x0D, 0x32, 0xAA, 0xAA, 0xAA, 0xAA};
     uint32_t input_identifier = 0x7E8;
-    application_layer_protocol_t actual = APPLICATION_LAYER_PROTOCOL_UNKNOWN;
-    application_layer_protocol_t expected = APPLICATION_LAYER_PROTOCOL_OBD2;
+    protocol_info_t actual = {
+        .protocol_name = PROTOCOL_NAME_UNKNOWN,
+        .protocol_details.obd2_details = {0}};
+
+    protocol_info_t expected = {
+        .protocol_name = PROTOCOL_NAME_OBD2,
+        .protocol_details.obd2_details = {
+            .identifier = 0x7E8,
+            .length = 0x03,
+            .mode = 0x41,
+            .pid = 0x0D,
+            .data_bytes = {0x32, 0xAA, 0xAA, 0xAA, 0xAA}}};
+
     int result = find_protocol(input_identifier, input_data, 8, &actual);
     TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
-    TEST_ASSERT_EQUAL_INT(expected, actual);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_name, actual.protocol_name);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.obd2_details.pid, actual.protocol_details.obd2_details.pid);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.obd2_details.identifier, actual.protocol_details.obd2_details.identifier);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.obd2_details.length, actual.protocol_details.obd2_details.length);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected.protocol_details.obd2_details.data_bytes, actual.protocol_details.obd2_details.data_bytes, 5);
 }
 
 void test_get_uds_frame_details_successfully()
@@ -78,13 +93,29 @@ void test_get_uds_frame_details_unsuccessfully()
 void test_find_protocol_uds_successfully()
 {
 
-    uint8_t input_data[] = {0x03, 0x7F, 0x22, 0x13};
+    uint8_t input_data[] = {0x03, 0x7F, 0x22, 0x13, 0xAA, 0xAA, 0xAA, 0xAA};
     uint32_t input_identifier = 0x7E8;
-    application_layer_protocol_t actual = APPLICATION_LAYER_PROTOCOL_UNKNOWN;
-    application_layer_protocol_t expected = APPLICATION_LAYER_PROTOCOL_UDS;
+    protocol_info_t actual = {
+        .protocol_name = PROTOCOL_NAME_UNKNOWN,
+        .protocol_details.uds_details = {0}};
+
+    protocol_info_t expected = {
+        .protocol_name = PROTOCOL_NAME_UDS,
+        .protocol_details.uds_details = {
+            .identifier = 0x7E8,
+            .protocol_control_information = 0x03,
+            .service_id = 0x7F,
+            .sub_function = 0x22,
+            .data_bytes = {0x13, 0xAA, 0xAA, 0xAA, 0xAA}}};
+
     int result = find_protocol(input_identifier, input_data, 8, &actual);
     TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
-    TEST_ASSERT_EQUAL_INT(expected, actual);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_name, actual.protocol_name);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.uds_details.protocol_control_information, actual.protocol_details.uds_details.protocol_control_information);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.uds_details.identifier, actual.protocol_details.uds_details.identifier);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.uds_details.service_id, actual.protocol_details.uds_details.service_id);
+    TEST_ASSERT_EQUAL_INT(expected.protocol_details.uds_details.sub_function, actual.protocol_details.uds_details.sub_function);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected.protocol_details.uds_details.data_bytes, actual.protocol_details.uds_details.data_bytes, 5);
 }
 
 int main()
