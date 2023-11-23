@@ -62,13 +62,19 @@ typedef enum
 
 typedef struct
 {
+    uint32_t identifier;
+    uint8_t data[8];
+} ecu_parser_raw_data_t;
+
+typedef struct
+{
     ecu_parser_protocol_name_t protocol_name;
     ecu_parser_protocol_details_t protocol_details;
 } ecu_parser_protocol_info_t;
 
-int ecu_parser_find_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, ecu_parser_protocol_info_t *protocol_info);
+int ecu_parser_find_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_protocol_info_t *protocol_info);
 ecu_parser_identifier_type_t ecu_parser_check_identifier_type(uint32_t identifier);
-int ecu_parser_get_obd2_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, ecu_parser_obd2_frame_details_t *frame_details);
-int ecu_parser_get_uds_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, ecu_parser_uds_frame_details_t *frame_details);
+int ecu_parser_get_obd2_frame_details(ecu_parser_raw_data_t raw_data, ecu_parser_obd2_frame_details_t *frame_details);
+int ecu_parser_get_uds_frame_details(ecu_parser_raw_data_t raw_data, ecu_parser_uds_frame_details_t *frame_details);
 
 #endif // ECU_PARSER_H
