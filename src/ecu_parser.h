@@ -10,15 +10,15 @@
 
 typedef enum
 {
-    PROTOCOL_NAME_J1939,
-    PROTOCOL_NAME_CANOPEN,
-    PROTOCOL_NAME_OBD2,
-    PROTOCOL_NAME_UDS,
-    PROTOCOL_NAME_LIN,
-    PROTOCOL_NAME_NMEA2000,
-    PROTOCOL_NAME_ISOBUS,
-    PROTOCOL_NAME_UNKNOWN
-} protocol_name_t;
+    ECU_PARSER_PROTOCOL_NAME_J1939,
+    ECU_PARSER_PROTOCOL_NAME_CANOPEN,
+    ECU_PARSER_PROTOCOL_NAME_OBD2,
+    ECU_PARSER_PROTOCOL_NAME_UDS,
+    ECU_PARSER_PROTOCOL_NAME_LIN,
+    ECU_PARSER_PROTOCOL_NAME_NMEA2000,
+    ECU_PARSER_PROTOCOL_NAME_ISOBUS,
+    ECU_PARSER_PROTOCOL_NAME_UNKNOWN
+} ecu_parser_protocol_name_t;
 
 typedef struct
 {
@@ -27,7 +27,7 @@ typedef struct
     uint8_t mode;
     uint8_t pid;
     uint8_t data_bytes[5];
-} obd2_frame_details_t;
+} ecu_parser_obd2_frame_details_t;
 
 typedef struct
 {
@@ -36,40 +36,39 @@ typedef struct
     uint8_t service_id;
     uint8_t sub_function;
     uint8_t data_bytes[5];
-} uds_frame_details_t;
+} ecu_parser_uds_frame_details_t;
 
 typedef union
 {
-    obd2_frame_details_t obd2_details;
-    uds_frame_details_t uds_details;
-} protocol_details_t;
+    ecu_parser_obd2_frame_details_t obd2_details;
+    ecu_parser_uds_frame_details_t uds_details;
+} ecu_parser_protocol_details_t;
 
 typedef enum
 {
-    IDENTIFIER_TYPE_STANDARD,
-    IDENTIFIER_TYPE_EXTENDED,
-} identifier_type_t;
+    ECU_PARSER_IDENTIFIER_TYPE_STANDARD,
+    ECU_PARSER_IDENTIFIER_TYPE_EXTENDED,
+} ecu_parser_identifier_type_t;
+
+// typedef struct
+// {
+//     uint8_t start_bit;
+//     uint8_t length;
+//     float scale;
+//     uint64_t offset;
+//     float min_value;
+//     float max_value;
+// } parser_details_t;
 
 typedef struct
 {
-    uint8_t start_bit;
-    uint8_t length;
-    float scale;
-    uint64_t offset;
-    float min_value;
-    float max_value;
-} parser_details_t;
+    ecu_parser_protocol_name_t protocol_name;
+    ecu_parser_protocol_details_t protocol_details;
+} ecu_parser_protocol_info_t;
 
-typedef struct
-{
-    protocol_name_t protocol_name;
-    protocol_details_t protocol_details;
-} protocol_info_t;
-
-int find_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, protocol_info_t *protocol_info);
-int parse_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, protocol_info_t protocol_info, parser_details_t parser_details);
-identifier_type_t check_identifier_type(uint32_t identifier);
-int get_obd2_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, obd2_frame_details_t *frame_details);
-int get_uds_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, uds_frame_details_t *frame_details);
+int ecu_parser_find_protocol(uint32_t identifier, const uint8_t *data, size_t data_size, ecu_parser_protocol_info_t *protocol_info);
+ecu_parser_identifier_type_t ecu_parser_check_identifier_type(uint32_t identifier);
+int ecu_parser_get_obd2_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, ecu_parser_obd2_frame_details_t *frame_details);
+int ecu_parser_get_uds_frame_details(uint32_t identifier, const uint8_t *data, size_t data_size, ecu_parser_uds_frame_details_t *frame_details);
 
 #endif // ECU_PARSER_H
