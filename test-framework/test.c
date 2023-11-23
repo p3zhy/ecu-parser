@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "../src/ecu_parser.h"
+#include "../include/ecu_parser.h"
 
 void setUp(void)
 {

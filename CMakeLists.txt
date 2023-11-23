@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(ecu-parser)
-
 set(CMAKE_C_STANDARD 11)
+include_directories(include)
 
-add_executable(ecutool src/main.c src/ecu_parser.c)
+# Source files
+set(SOURCES
+    src/ecu_parser.c
+    main.c
+)
 
-# TODO: Add any necessary include directories or link libraries
+add_executable(ecutool ${SOURCES})
