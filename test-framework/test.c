@@ -1,5 +1,7 @@
 #include "unity.h"
-#include "../include/ecu_parser.h"
+#include "../inc/ecu_parser.h"
+#include "../inc/obd2.h"
+#include "../inc/uds.h"
 
 void setUp(void)
 {
