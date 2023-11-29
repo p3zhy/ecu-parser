@@ -102,6 +102,38 @@ void test_ecu_parser_find_protocol_uds_successfully()
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected.protocol_details.uds_details.data_bytes, actual.protocol_details.uds_details.data_bytes, 5);
 }
 
+void test_ecu_parser_find_obd2_service_successfully()
+{
+    ecu_parser_obd2_service_t service;
+    ecu_parser_obd2_frame_details_t frame_details = {.mode = 0x01};
+    int result = ecu_parser_find_obd2_service(frame_details, &service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_INT(service, ECU_PARSER_OBD2_SERVICE_SHOW_CURRENT_DATA);
+}
+void test_ecu_parser_find_uds_service_successfully()
+{
+    ecu_parser_uds_service_t service;
+    ecu_parser_uds_frame_details_t frame_details = {.service_id = 0x22};
+    int result = ecu_parser_find_uds_service(frame_details, &service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_INT(service, ECU_PARSER_UDS_SERVICE_READ_DATA_BY_IDENTIFIER);
+}
+
+void test_ecu_parser_find_obd2_service_unsuccessfully()
+{
+    ecu_parser_obd2_service_t service;
+    ecu_parser_obd2_frame_details_t frame_details = {.mode = 0x22};
+    int result = ecu_parser_find_obd2_service(frame_details, &service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
+}
+void test_ecu_parser_find_uds_service_unsuccessfully()
+{
+    ecu_parser_uds_service_t service;
+    ecu_parser_uds_frame_details_t frame_details = {.service_id = 0x1};
+    int result = ecu_parser_find_uds_service(frame_details, &service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -111,7 +143,10 @@ int main()
     RUN_TEST(test_ecu_parser_find_protocol_obd2_successfully);
     RUN_TEST(test_ecu_parser_get_uds_frame_details_successfully);
     RUN_TEST(test_ecu_parser_find_protocol_uds_successfully);
-
+    RUN_TEST(test_ecu_parser_find_obd2_service_successfully);
+    RUN_TEST(test_ecu_parser_find_uds_service_successfully);
+    RUN_TEST(test_ecu_parser_find_obd2_service_unsuccessfully);
+    RUN_TEST(test_ecu_parser_find_uds_service_unsuccessfully);
     UNITY_END();
 
     return 0;
