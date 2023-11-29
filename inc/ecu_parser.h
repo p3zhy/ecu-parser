@@ -22,18 +22,17 @@ typedef enum
     ECU_PARSER_PROTOCOL_NAME_UNKNOWN
 } ecu_parser_protocol_name_t;
 
-typedef union
-{
-    ecu_parser_obd2_frame_details_t obd2_details;
-    ecu_parser_uds_frame_details_t uds_details;
-} ecu_parser_protocol_details_t;
-
 typedef enum
 {
     ECU_PARSER_IDENTIFIER_TYPE_STANDARD,
     ECU_PARSER_IDENTIFIER_TYPE_EXTENDED,
 } ecu_parser_identifier_type_t;
 
+typedef union
+{
+    ecu_parser_obd2_frame_details_t obd2_details;
+    ecu_parser_uds_frame_details_t uds_details;
+} ecu_parser_protocol_details_t;
 
 // typedef struct
 // {
@@ -51,8 +50,14 @@ typedef struct
     ecu_parser_protocol_details_t protocol_details;
 } ecu_parser_protocol_info_t;
 
+typedef union
+{
+    ecu_parser_obd2_service_t obd2_service;
+    ecu_parser_uds_service_t uds_service;
+} ecu_parser_service_t;
+
 int ecu_parser_find_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_protocol_info_t *protocol_info);
-int ecu_parser_find_service(ecu_parser_protocol_info_t protocol_info);
+int ecu_parser_find_service(ecu_parser_protocol_info_t protocol_info, ecu_parser_service_t *ecu_parser_service);
 ecu_parser_identifier_type_t ecu_parser_check_identifier_type(uint32_t identifier);
 
 #endif // ECU_PARSER_H
