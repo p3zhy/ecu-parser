@@ -8,6 +8,7 @@ set(SOURCES
     src/ecu_parser.c
     src/obd2.c
     src/uds.c
+    src/helpers.c
     main.c
 )
 

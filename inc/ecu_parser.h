@@ -19,14 +19,7 @@ typedef enum
     ECU_PARSER_PROTOCOL_NAME_LIN,
     ECU_PARSER_PROTOCOL_NAME_NMEA2000,
     ECU_PARSER_PROTOCOL_NAME_ISOBUS,
-    ECU_PARSER_PROTOCOL_NAME_UNKNOWN
 } ecu_parser_protocol_name_t;
-
-typedef enum
-{
-    ECU_PARSER_IDENTIFIER_TYPE_STANDARD,
-    ECU_PARSER_IDENTIFIER_TYPE_EXTENDED,
-} ecu_parser_identifier_type_t;
 
 typedef union
 {
@@ -58,6 +51,6 @@ typedef union
 
 int ecu_parser_find_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_protocol_info_t *protocol_info);
 int ecu_parser_find_service(ecu_parser_protocol_info_t protocol_info, ecu_parser_service_t *ecu_parser_service);
-ecu_parser_identifier_type_t ecu_parser_check_identifier_type(uint32_t identifier);
+
 
 #endif // ECU_PARSER_H

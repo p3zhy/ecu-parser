@@ -2,6 +2,7 @@
 #include "../inc/ecu_parser.h"
 #include "../inc/obd2.h"
 #include "../inc/uds.h"
+#include "../inc/helpers.h"
 
 void setUp(void)
 {
@@ -39,7 +40,6 @@ void test_ecu_parser_find_protocol_obd2_successfully()
                                                                    .data = {0x03, 0x41, 0x0D, 0x32, 0xAA, 0xAA, 0xAA, 0xAA}};
 
     ecu_parser_protocol_info_t actual = {
-        .protocol_name = ECU_PARSER_PROTOCOL_NAME_UNKNOWN,
         .protocol_details.obd2_details = {0}};
 
     ecu_parser_protocol_info_t expected = {
@@ -80,7 +80,6 @@ void test_ecu_parser_find_protocol_uds_successfully()
     ecu_parser_raw_data_t input_raw_data = (ecu_parser_raw_data_t){.identifier = 0x7E8,
                                                                    .data = {0x03, 0x7F, 0x22, 0x13, 0xAA, 0xAA, 0xAA, 0xAA}};
     ecu_parser_protocol_info_t actual = {
-        .protocol_name = ECU_PARSER_PROTOCOL_NAME_UNKNOWN,
         .protocol_details.uds_details = {0}};
 
     ecu_parser_protocol_info_t expected = {
@@ -100,6 +99,17 @@ void test_ecu_parser_find_protocol_uds_successfully()
     TEST_ASSERT_EQUAL_INT(expected.protocol_details.uds_details.service_id, actual.protocol_details.uds_details.service_id);
     TEST_ASSERT_EQUAL_INT(expected.protocol_details.uds_details.sub_function, actual.protocol_details.uds_details.sub_function);
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected.protocol_details.uds_details.data_bytes, actual.protocol_details.uds_details.data_bytes, 5);
+}
+
+void test_ecu_parser_find_protocol_unsuccessfully()
+{
+
+    ecu_parser_raw_data_t input_raw_data = (ecu_parser_raw_data_t){.identifier = 0xff};
+
+    ecu_parser_protocol_info_t actual;
+
+    int result = ecu_parser_find_protocol(input_raw_data, &actual);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
 }
 
 void test_ecu_parser_find_obd2_service_successfully()
@@ -175,6 +185,7 @@ int main()
     RUN_TEST(test_ecu_parser_check_identifier_type);
     RUN_TEST(test_ecu_parser_get_obd2_frame_details_successfully);
     RUN_TEST(test_ecu_parser_find_protocol_obd2_successfully);
+    RUN_TEST(test_ecu_parser_find_protocol_unsuccessfully);
     RUN_TEST(test_ecu_parser_get_uds_frame_details_successfully);
     RUN_TEST(test_ecu_parser_find_protocol_uds_successfully);
     RUN_TEST(test_ecu_parser_find_obd2_service_successfully);

@@ -19,4 +19,5 @@ typedef struct
 } ecu_parser_uds_frame_details_t;
 int ecu_parser_get_uds_frame_details(ecu_parser_raw_data_t raw_data, ecu_parser_uds_frame_details_t *frame_details);
 int ecu_parser_find_uds_service(ecu_parser_uds_frame_details_t frame_details, ecu_parser_uds_service_t *service);
+int ecu_parser_check_uds_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_uds_frame_details_t *frame_details);
 #endif

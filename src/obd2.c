@@ -1,6 +1,7 @@
 #include "obd2.h"
 #include <stdlib.h>
 #include <string.h>
+#include <helpers.h>
 
 int ecu_parser_get_obd2_frame_details(ecu_parser_raw_data_t raw_data, ecu_parser_obd2_frame_details_t *frame_details)
 {
@@ -22,4 +23,20 @@ int ecu_parser_find_obd2_service(ecu_parser_obd2_frame_details_t frame_details, 
     }
 
     return EXIT_FAILURE;
+}
+
+int ecu_parser_check_obd2_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_obd2_frame_details_t *frame_details)
+{
+
+    if ((raw_data.identifier == 0x7DF) || ((raw_data.identifier >= 0x7E0) && (raw_data.identifier <= 0x7EF)) || (raw_data.identifier == 0x18DB33F1) || ((raw_data.identifier >= 0x18DAF100) && (raw_data.identifier <= 0x18DAF1FF)))
+    {
+        ecu_parser_obd2_frame_details_t obd2_frame_detail;
+        if (ecu_parser_get_obd2_frame_details(raw_data, &obd2_frame_detail))
+            return EXIT_FAILURE;
+        if ((obd2_frame_detail.mode <= 0x0A && obd2_frame_detail.mode >= 0x01) || (obd2_frame_detail.mode <= 0x4A && obd2_frame_detail.mode >= 0x41))
+        {
+            *frame_details = obd2_frame_detail;
+            return EXIT_SUCCESS;
+        }
+    }
 }

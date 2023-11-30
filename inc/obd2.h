@@ -18,5 +18,6 @@ typedef struct
 
 int ecu_parser_find_obd2_service(ecu_parser_obd2_frame_details_t frame_details, ecu_parser_obd2_service_t *service);
 int ecu_parser_get_obd2_frame_details(ecu_parser_raw_data_t raw_data, ecu_parser_obd2_frame_details_t *frame_details);
+int ecu_parser_check_obd2_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_obd2_frame_details_t *frame_details);
 
 #endif
