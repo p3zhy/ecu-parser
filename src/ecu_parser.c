@@ -76,13 +76,13 @@ int ecu_parser_find_service(ecu_parser_protocol_info_t protocol_info, ecu_parser
     switch (protocol_info.protocol_name)
     {
     case ECU_PARSER_PROTOCOL_NAME_OBD2:
-        ecu_parser_find_obd2_service(protocol_info.protocol_details.obd2_details, &ecu_parser_service->obd2_service);
+        if (!ecu_parser_find_obd2_service(protocol_info.protocol_details.obd2_details, &ecu_parser_service->obd2_service))
+            return EXIT_SUCCESS;
         break;
     case ECU_PARSER_PROTOCOL_NAME_UDS:
-        ecu_parser_find_uds_service(protocol_info.protocol_details.uds_details, &ecu_parser_service->uds_service);
-        break;
-    default:
+        if (!ecu_parser_find_uds_service(protocol_info.protocol_details.uds_details, &ecu_parser_service->uds_service))
+            return EXIT_SUCCESS;
         break;
     }
-    return EXIT_SUCCESS;
+    return EXIT_FAILURE;
 }

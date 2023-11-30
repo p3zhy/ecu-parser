@@ -134,6 +134,40 @@ void test_ecu_parser_find_uds_service_unsuccessfully()
     TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
 }
 
+void test_ecu_parser_find_service_obd2_successfully()
+{
+    ecu_parser_service_t ecu_parser_service;
+    ecu_parser_protocol_info_t protocol_info = {.protocol_name = ECU_PARSER_PROTOCOL_NAME_OBD2, .protocol_details.obd2_details.mode = 0x01};
+    int result = ecu_parser_find_service(protocol_info, &ecu_parser_service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_INT(ecu_parser_service.obd2_service, ECU_PARSER_OBD2_SERVICE_SHOW_CURRENT_DATA);
+}
+void test_ecu_parser_find_service_uds_successfully()
+{
+
+    ecu_parser_service_t ecu_parser_service;
+    ecu_parser_protocol_info_t protocol_info = {.protocol_name = ECU_PARSER_PROTOCOL_NAME_UDS, .protocol_details.uds_details.service_id = 0x22};
+    int result = ecu_parser_find_service(protocol_info, &ecu_parser_service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_INT(ecu_parser_service.uds_service, ECU_PARSER_UDS_SERVICE_READ_DATA_BY_IDENTIFIER);
+}
+
+void test_ecu_parser_find_service_obd2_unsuccessfully()
+{
+    ecu_parser_service_t ecu_parser_service;
+    ecu_parser_protocol_info_t protocol_info = {.protocol_name = ECU_PARSER_PROTOCOL_NAME_OBD2, .protocol_details.obd2_details.mode = 0x33};
+    int result = ecu_parser_find_service(protocol_info, &ecu_parser_service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
+}
+void test_ecu_parser_find_service_uds_unsuccessfully()
+{
+
+    ecu_parser_service_t ecu_parser_service;
+    ecu_parser_protocol_info_t protocol_info = {.protocol_name = ECU_PARSER_PROTOCOL_NAME_UDS, .protocol_details.uds_details.service_id = 0x1};
+    int result = ecu_parser_find_service(protocol_info, &ecu_parser_service);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -147,6 +181,10 @@ int main()
     RUN_TEST(test_ecu_parser_find_uds_service_successfully);
     RUN_TEST(test_ecu_parser_find_obd2_service_unsuccessfully);
     RUN_TEST(test_ecu_parser_find_uds_service_unsuccessfully);
+    RUN_TEST(test_ecu_parser_find_service_obd2_successfully);
+    RUN_TEST(test_ecu_parser_find_service_uds_successfully);
+    RUN_TEST(test_ecu_parser_find_service_obd2_unsuccessfully);
+    RUN_TEST(test_ecu_parser_find_service_uds_unsuccessfully);
     UNITY_END();
 
     return 0;
