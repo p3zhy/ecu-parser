@@ -13,3 +13,6 @@ set(SOURCES
 )
 
 add_executable(ecutool ${SOURCES})
+
+# Link with the math library
+target_link_libraries(ecutool m)

@@ -178,6 +178,72 @@ void test_ecu_parser_find_service_uds_unsuccessfully()
     TEST_ASSERT_EQUAL_INT(result, EXIT_FAILURE);
 }
 
+void test_ecu_parser_find_parameter_little_endian_order()
+{
+    ecu_parser_raw_data_t raw_data = {
+        .identifier = 0x0CF00401,
+        .data = {0xFF, 0xFF, 0xFF, 0x68, 0x13, 0xFF, 0xFF, 0xFF}};
+
+    ecu_parser_parameter_details_t parameter_details = {
+        .start_bit = 24,
+        .length = 16,
+        .scale = 0.125,
+        .offset = 0,
+        .min_value = 0.0,
+        .max_value = 8031.875};
+
+    ecu_parser_byte_order_t byte_order = ECU_PARSER_BYTE_ORDER_LITTLE_ENDIAN;
+
+    float value;
+    int result = ecu_parser_find_parameter(raw_data, parameter_details, byte_order, &value);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_FLOAT(value, 621.0);
+}
+
+void test_ecu_parser_find_parameter_big_endian_order()
+{
+    ecu_parser_raw_data_t raw_data = {
+        .identifier = 0x0CF00401,
+        .data = {0xFF, 0xFF, 0xFF, 0x13, 0x68, 0xFF, 0xFF, 0xFF}};
+
+    ecu_parser_parameter_details_t parameter_details = {
+        .start_bit = 24,
+        .length = 16,
+        .scale = 0.125,
+        .offset = 0,
+        .min_value = 0.0,
+        .max_value = 8031.875};
+
+    ecu_parser_byte_order_t byte_order = ECU_PARSER_BYTE_ORDER_BIG_ENDIAN;
+
+    float value;
+    int result = ecu_parser_find_parameter(raw_data, parameter_details, byte_order, &value);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_FLOAT(621.0, value);
+}
+
+void test_ecu_parser_find_parameter_length_lower_than_8()
+{
+    ecu_parser_raw_data_t raw_data = {
+        .identifier = 0x0CF00401,
+        .data = {0xFF, 0xFF, 0xFF, 0x27, 0xFF, 0xFF, 0xFF, 0xFF}};
+
+    ecu_parser_parameter_details_t parameter_details = {
+        .start_bit = 24,
+        .length = 3,
+        .scale = 1.0,
+        .offset = 0,
+        .min_value = 0.0,
+        .max_value = 10000};
+
+    ecu_parser_byte_order_t byte_order = ECU_PARSER_BYTE_ORDER_LITTLE_ENDIAN;
+
+    float value;
+    int result = ecu_parser_find_parameter(raw_data, parameter_details, byte_order, &value);
+    TEST_ASSERT_EQUAL_INT(result, EXIT_SUCCESS);
+    TEST_ASSERT_EQUAL_FLOAT(value, 7.0);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -196,6 +262,10 @@ int main()
     RUN_TEST(test_ecu_parser_find_service_uds_successfully);
     RUN_TEST(test_ecu_parser_find_service_obd2_unsuccessfully);
     RUN_TEST(test_ecu_parser_find_service_uds_unsuccessfully);
+    RUN_TEST(test_ecu_parser_find_parameter_little_endian_order);
+    RUN_TEST(test_ecu_parser_find_parameter_big_endian_order);
+    RUN_TEST(test_ecu_parser_find_parameter_length_lower_than_8);
+
     UNITY_END();
 
     return 0;

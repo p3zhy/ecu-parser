@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 typedef enum
 {
     ECU_PARSER_PROTOCOL_NAME_J1939,
@@ -27,15 +28,22 @@ typedef union
     ecu_parser_uds_frame_details_t uds_details;
 } ecu_parser_protocol_details_t;
 
-// typedef struct
-// {
-//     uint8_t start_bit;
-//     uint8_t length;
-//     float scale;
-//     uint64_t offset;
-//     float min_value;
-//     float max_value;
-// } parser_details_t;
+typedef enum
+{
+    ECU_PARSER_BYTE_ORDER_LITTLE_ENDIAN,
+    ECU_PARSER_BYTE_ORDER_BIG_ENDIAN
+} ecu_parser_byte_order_t;
+
+typedef struct
+{
+    size_t start_bit;
+    size_t length;
+    float scale;
+    uint64_t offset;
+    float min_value;
+    float max_value;
+
+} ecu_parser_parameter_details_t;
 
 typedef struct
 {
@@ -51,6 +59,6 @@ typedef union
 
 int ecu_parser_find_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_protocol_info_t *protocol_info);
 int ecu_parser_find_service(ecu_parser_protocol_info_t protocol_info, ecu_parser_service_t *ecu_parser_service);
-
+int ecu_parser_find_parameter(ecu_parser_raw_data_t raw_data, ecu_parser_parameter_details_t parameter_details, ecu_parser_byte_order_t byte_order, float *value);
 
 #endif // ECU_PARSER_H
