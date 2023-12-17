@@ -39,4 +39,5 @@ int ecu_parser_check_obd2_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_ob
             return EXIT_SUCCESS;
         }
     }
+    return EXIT_FAILURE;
 }

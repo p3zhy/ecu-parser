@@ -39,4 +39,5 @@ int ecu_parser_check_uds_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_uds
             return EXIT_SUCCESS;
         }
     }
+    return EXIT_FAILURE;
 }
