@@ -5,6 +5,7 @@
 #include "obd2.h"
 #include "uds.h"
 #include "j1939.h"
+#include "canopen.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -28,6 +29,7 @@ typedef union
     ecu_parser_obd2_frame_details_t obd2_details;
     ecu_parser_uds_frame_details_t uds_details;
     ecu_parser_j1939_frame_details_t j1939_details;
+    ecu_parser_canopen_frame_details_t canopen_details;
 } ecu_parser_protocol_details_t;
 
 typedef enum
@@ -58,6 +60,7 @@ typedef union
     ecu_parser_obd2_service_t obd2_service;
     ecu_parser_uds_service_t uds_service;
     ecu_parser_j1939_service_t j1939_service;
+    ecu_parser_canopen_service_t canopen_service;
 } ecu_parser_service_t;
 
 int ecu_parser_find_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_protocol_info_t *protocol_info);

@@ -9,6 +9,7 @@ set(SOURCES
     src/obd2.c
     src/uds.c
     src/j1939.c
+    src/canopen.c
     src/helpers.c
     main.c
 )

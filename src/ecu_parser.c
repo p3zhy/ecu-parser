@@ -21,6 +21,12 @@ int ecu_parser_find_protocol(ecu_parser_raw_data_t raw_data, ecu_parser_protocol
         return EXIT_SUCCESS;
     }
 
+    if (!ecu_parser_check_canopen_protocol(raw_data, &protocol_info->protocol_details.canopen_details))
+    {
+        protocol_info->protocol_name = ECU_PARSER_PROTOCOL_NAME_CANOPEN;
+        return EXIT_SUCCESS;
+    }
+
     return EXIT_FAILURE;
 }
 
@@ -40,6 +46,11 @@ int ecu_parser_find_service(ecu_parser_protocol_info_t protocol_info, ecu_parser
 
     case ECU_PARSER_PROTOCOL_NAME_J1939:
         if (!ecu_parser_find_j1939_service(protocol_info.protocol_details.j1939_details, &ecu_parser_service->j1939_service))
+            return EXIT_SUCCESS;
+        break;
+
+    case ECU_PARSER_PROTOCOL_NAME_CANOPEN:
+        if (!ecu_parser_find_canopen_service(protocol_info.protocol_details.canopen_details, &ecu_parser_service->canopen_service))
             return EXIT_SUCCESS;
         break;
     }
